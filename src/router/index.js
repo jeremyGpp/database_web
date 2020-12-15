@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 export default new VueRouter({
   routes: [
     { path: '/', redirect: '/login' },
+    { path: 'http://127.0.0.1:8080/api', redirect: 'http://127.0.0.1:3000/api' },
     { path: '/login', component: Login }
   ]
 })

@@ -9,23 +9,23 @@
                     <b><font color="black">DBM</font>S</b>
             </p>
             <!-- 登录表单区 -->
-            <el-form :model="loginForm" :rules="loginRules" class="login_form">
+            <el-form ref="loginFormRef" :model="loginForm" :rules="loginRules" class="login_form">
                 <!-- 用户名 -->
                 <el-form-item prop="username">
                     <el-input v-model="loginForm.username" placeholder="Username" prefix-icon="el-icon-user-solid"></el-input>
                 </el-form-item>
                 <!-- 密码 -->
                 <el-form-item prop="password">
-                    <el-input v-model="loginForm.password" placeholder="Password" prefix-icon="el-icon-lock" show-password></el-input>
+                    <el-input v-model="loginForm.password" placeholder="Password" prefix-icon="el-icon-lock" show-password @keyup.enter.native="submitForm('loginForm')"></el-input>
                 </el-form-item>
             </el-form>
             <!-- 登陆注册button -->
             <div class="user_btns">
                 <div>
-                <button class="btn_login"><b>Login</b></button>
+                <button class="btn_login" @click="submitForm('loginForm')"><b>Login</b></button>
             </div>
              <div>
-                <button class="btn_signup"><b>Sign up</b></button>
+                <button class="btn_signup" @click="handleCommand()"><b>Sign up</b></button>
             </div>
             </div>
         </div>
@@ -34,6 +34,7 @@
 
 <script>
 export default {
+  name: 'login',
   data () {
     return {
       // 登陆表单的数据对象
@@ -51,6 +52,30 @@ export default {
           { required: true, message: 'Password can not be empty', trigger: 'blur' }
         ]
       }
+    }
+  },
+  methods: {
+    submitForm (formName) {
+      const self = this
+      localStorage.setItem('ms_username', self.loginForm.username)
+      localStorage.setItem('ms_user', JSON.stringify(self.loginForm))
+      console.log(JSON.stringify(self.loginForm))
+      self.$http.post('http://10.21.84.222:3000/api/userApi/login', JSON.stringify(self.loginForm))
+        .then((response) => {
+          console.log(response)
+          if (response.data === -1) {
+            return this.$message.error('Login failed')
+          } else if (response.data === 0) {
+            return this.$message.error('Login failed')
+          } else if (response.data === 1) {
+            return this.$message.success('Login success')
+          }
+        }).then((error) => {
+          console.log(error)
+        })
+    },
+    handleCommand () {
+      this.$router.push('/register')
     }
   }
 }
@@ -111,10 +136,10 @@ export default {
 .user_btns {
     position: relative;
     width: 100%;
-    top: 110px;
+    top: 100px;
     padding: 0 10%;
     box-sizing: border-box;
-    .btn_login {
+.btn_login {
     font-size: 16px;
     font-family: 'Gill Sans';
     color: white;
