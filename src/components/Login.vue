@@ -1,34 +1,59 @@
 <template>
     <div class="login_container">
-        <img class="wallpaper" src="../assets/drhDe29TEts.jpg">
+        <img class="wallpaper" src="../assets/login_bg.jpg">
         <p class="sustech_title">
-            <b><i><font color="black">SUSTech.<br>VCD</font>Store</i></b>
+            <b><font color="whitesmoke">SUSTech.<br>VCD</font>Store</b>
         </p>
-        <div v-show="true" class="login_box">
+        <div class="login_box">
             <p class="login_title">
-                    <b><font color="white">DBM</font>S</b>
+                    <b><font color="black">DBM</font>S</b>
             </p>
             <!-- 登录表单区 -->
-            <el-form class="login_form" label-width="0px">
+            <el-form :model="loginForm" :rules="loginRules" class="login_form">
                 <!-- 用户名 -->
-                <el-form-item class="item_user" >
-                    <el-input ></el-input>
+                <el-form-item prop="username">
+                    <el-input v-model="loginForm.username" placeholder="Username" prefix-icon="el-icon-user-solid"></el-input>
                 </el-form-item>
                 <!-- 密码 -->
-                <el-form-item class="item_pw">
-                    <el-input ></el-input>
-                </el-form-item>
-                <!-- 按钮 -->
-                <el-form-item class="item_btns">
-                    <button class="btn_login"><b>Login</b></button>
+                <el-form-item prop="password">
+                    <el-input v-model="loginForm.password" placeholder="Password" prefix-icon="el-icon-lock" show-password></el-input>
                 </el-form-item>
             </el-form>
+            <!-- 登陆注册button -->
+            <div class="user_btns">
+                <div>
+                <button class="btn_login"><b>Login</b></button>
+            </div>
+             <div>
+                <button class="btn_signup"><b>Sign up</b></button>
+            </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data () {
+    return {
+      // 登陆表单的数据对象
+      loginForm: {
+        username: '',
+        password: ''
+      },
+      // 校验规则
+      loginRules: {
+        username: [
+          { required: true, message: 'Username can not be empty', trigger: 'blur' },
+          { min: 3, max: 10, message: 'Length of username should between 3 to 10!', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: 'Password can not be empty', trigger: 'blur' }
+        ]
+      }
+    }
+  }
+}
 </script>
 
 <style lang="less" scoped>
@@ -43,22 +68,20 @@ export default {}
 
 .login_box {
     width: 400px;
-    height: 500px;
-    background-color: black;
+    height: 450px;
+    background-color: whitesmoke;
     border-radius: 5px;
     position: absolute;
     left: 55%;
     top: 50%;
     transform: translate(0, -50%);
-    box-shadow: 0 0 8px rgb(7, 7, 7)
+    box-shadow: 0 0 8px rgb(7, 7, 7);
 }
 
 .login_title {
-    position: absolute;
-    top: 8%;
     width: 100%;
     padding: 0 25%;
-    color:rgb(237, 108, 0);
+    color:rgb(255, 132, 130);
     font-size: 60px;
     letter-spacing: 3px;
     font-family:'Gill Sans';
@@ -69,31 +92,53 @@ export default {}
     font-size: 80px;
     width: 450px;
     height: 300px;
+    text-indent: -75px;
+    text-shadow: 0 0 2px rgb(0, 0, 0);
     position: absolute;
-    left: 12%;
-    top: 25%;
-    color: rgb(237, 108, 0);
+    left: 15%;
+    top: 20%;
+    color: black;
 }
 
 .login_form {
     position: absolute;
-    bottom: 30%;
+    bottom: 40%;
     width: 100%;
     padding: 0 10%;
     box-sizing: border-box;
 }
 
-.btn_login {
-    font-size: 16px;
-    font-family: Tahoma;
-    height: 35px;
+.user_btns {
+    position: relative;
     width: 100%;
-    padding: 0 20%;
+    top: 110px;
+    padding: 0 10%;
     box-sizing: border-box;
-    border-radius: 7px;
-    border-color: rgb(65, 62, 62);
-    background-color: white;
-    position: absolute;
+    .btn_login {
+    font-size: 16px;
+    font-family: 'Gill Sans';
+    color: white;
+    height: 30px;
+    width: 100%;
+    border-radius: 5px;
+    border-block-width: 2px;
+    border-color:  white;
+    background-color:black;
+}
+
+.btn_signup {
+    font-size: 16px;
+    font-family: 'Gill Sans';
+    color: white;
+    height: 30px;
+    width: 100%;
+    border-radius: 5px;
+    border-block-width: 2px;
+    border-color:  white;
+    background-color: black;
+    position: relative;
     top: 5px;
+
+}
 }
 </style>
