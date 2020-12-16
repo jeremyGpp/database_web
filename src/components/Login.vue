@@ -1,10 +1,12 @@
 <template>
     <div class="login_container">
         <img class="wallpaper" src="../assets/login_bg.jpg">
-        <p class="sustech_title">
-            <b><font color="whitesmoke">SUSTech.<br>VCD</font>Store</b>
-        </p>
+        <div class="sustech_title">
+          <img class="hat" src="../assets/hat.png">
+          <p><b><font color="whitesmoke">SUSTech.<br>VCD</font>Store</b></p>
+        </div>
         <div class="login_box">
+            <img class="santas" src="../assets/santas.gif">
             <p class="login_title">
                     <b><font color="black">DBM</font>S</b>
             </p>
@@ -39,14 +41,14 @@ export default {
     return {
       // 登陆表单的数据对象
       loginForm: {
-        username: '',
-        password: ''
+        username: 'gxh',
+        password: '123'
       },
       // 校验规则
       loginRules: {
         username: [
           { required: true, message: 'Username can not be empty', trigger: 'blur' },
-          { min: 3, max: 10, message: 'Length of username should between 3 to 10!', trigger: 'blur' }
+          { min: 2, max: 10, message: 'Length of username should between 3 to 10!', trigger: 'blur' }
         ],
         password: [
           { required: true, message: 'Password can not be empty', trigger: 'blur' }
@@ -60,7 +62,7 @@ export default {
       localStorage.setItem('ms_username', self.loginForm.username)
       localStorage.setItem('ms_user', JSON.stringify(self.loginForm))
       console.log(JSON.stringify(self.loginForm))
-      self.$http.post('http://10.21.84.222:3000/api/userApi/login', JSON.stringify(self.loginForm))
+      self.$http.post('http://127.0.0.1:3000/api/userApi/login', JSON.stringify(self.loginForm))
         .then((response) => {
           console.log(response)
           if (response.data === -1) {
@@ -68,6 +70,8 @@ export default {
           } else if (response.data === 0) {
             return this.$message.error('Login failed')
           } else if (response.data === 1) {
+            this.$router.push('/userhome')
+            console.log(response)
             return this.$message.success('Login success')
           }
         }).then((error) => {
@@ -88,7 +92,29 @@ export default {
     .wallpaper {
         width: 100%;
         height:100%;
+        z-index: -1;
     }
+    .sustech_title {
+        font-family:Tahoma;
+        font-size: 80px;
+        width: 450px;
+        height: 300px;
+        text-indent: -75px;
+        text-shadow: 0 0 2px rgb(0, 0, 0);
+        position: absolute;
+        left: 15%;
+        top: 20%;
+        color: black;
+
+        .hat {
+            width: 40%;
+            height:50%;
+            position: absolute;
+            left: -38%;
+            top: 11%;
+            z-index: 1;
+    }
+}
 }
 
 .login_box {
@@ -97,32 +123,28 @@ export default {
     background-color: whitesmoke;
     border-radius: 5px;
     position: absolute;
-    left: 55%;
-    top: 50%;
+    left: 58%;
+    top: 48%;
     transform: translate(0, -50%);
     box-shadow: 0 0 8px rgb(7, 7, 7);
+
+    .santas {
+        width: 50%;
+        height:40%;
+        position: absolute;
+        right: 26%;
+        top: -18%;
+        z-index: 1;
+    }
 }
 
 .login_title {
     width: 100%;
     padding: 0 25%;
-    color:rgb(255, 132, 130);
+    color:rgb(230, 113, 104);
     font-size: 60px;
     letter-spacing: 3px;
     font-family:'Gill Sans';
-}
-
-.sustech_title {
-    font-family:Tahoma;
-    font-size: 80px;
-    width: 450px;
-    height: 300px;
-    text-indent: -75px;
-    text-shadow: 0 0 2px rgb(0, 0, 0);
-    position: absolute;
-    left: 15%;
-    top: 20%;
-    color: black;
 }
 
 .login_form {
