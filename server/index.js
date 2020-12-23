@@ -1,5 +1,9 @@
 // node 后端服务器
 const userApi = require('./api/userApi')
+const vcdApi = require('./api/vcdApi')
+const lendApi = require('./api/lendApi')
+const sellApi = require('./api/sellApi')
+const stockApi = require('./api/stockApi')
 const fs = require('fs')
 const path = require('path')
 const bodyParser = require('body-parser')
@@ -21,8 +25,11 @@ app.all("*", function (req, res, next) {
 app.use(bodyParser.json()) // 以json格式返回出去
 app.use(bodyParser.urlencoded({ extended: false }))
 // 后端api路由
-
 app.use('/api/userApi', userApi)
+app.use('/api/vcdApi', vcdApi)
+app.use('/api/lendApi', lendApi)
+app.use('/api/sellApi', sellApi)
+app.use('/api/stockApi', stockApi)
 // 监听端口
-app.listen(3000)
-console.log('success listen at port:3000......')
+app.listen(8001)
+console.log('success listen at port:8001......')

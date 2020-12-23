@@ -6,3 +6,21 @@ body,
     margin: 0;
     padding: 0;
 }
+
+.el-breadcrumb {
+    margin-bottom: 15px;
+    font-size: 16px;
+    font-family: 'Gill Sans';
+}
+
+.el-button {
+    font-size: 16px;
+    font-family: 'Gill Sans';
+}
+
+.el-table {
+    margin-top: 25px;
+    font-size: 16px;
+    font-family: 'Gill Sans';
+    color: rgb(36, 33, 33);
+}

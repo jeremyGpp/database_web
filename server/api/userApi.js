@@ -18,11 +18,7 @@ const jsonWrite = function (res, ret) {
 router.post('/login', (req, res) => {
   var sql_name = $sql.user.select
   var params = req.body
-  console.log(params)
-  if (params.username) {
-    sql_name += "where username ="+ params.name + "'"
-  }
-  var keywords = JSON.parse(Object.keys(params)[0])
+  sql_name += " where cno = " +"'"+params.username+"'"
   conn.query(sql_name, params.username, function(err, result) {
     if (err) {
       console.log(err)
@@ -31,9 +27,13 @@ router.post('/login', (req, res) => {
       res.send('-1')
     } else {
       var resultArray = result[0]
-      console.log(resultArray.password)
-      if (resultArray.password === keywords.password) {
-        res.send('1')
+      if (resultArray.cpassword === params.password) {
+        if(resultArray.cadmin === '1') {
+          res.send('2')
+        } else {
+          console.log(resultArray.cadmin)
+          res.send('1')
+        }       
       } else {
           res.send('0')
       }
@@ -42,61 +42,120 @@ router.post('/login', (req, res) => {
 })
 
 // 接口：增加信息
-router.post('/addStu', (req, res) => {
+router.post('/addUser', (req, res) => {
   const sql = $sql.user.add
   const params = req.body
   console.log('添加', params)
-  conn.query(sql, [params.username, params.password], function (err, result) {
+  conn.query(sql, [params.cno, params.cpassword, params.cname, params.ctel, params.cadmin], function (err, result) {
     if (err) {
       console.log(err)
+      res.send('-1')
     }
     if (result) {
-      jsonWrite(res, result)
+      res.send('1')
     }
   })
 })
 
 // 接口：查询全部
-router.get('/show', (req, res) => {
+router.get('/getUserList', (req, res) => {
   const sql = $sql.user.select
-  const params = req.body
-  console.log(params)
-  conn.query(sql, [params.username, params.password], function (err, result) {
+  conn.query(sql, function (err, result) {
     if (err) {
+      res.send(-1)
       console.log(err)
     }
     if (result) {
-      jsonWrite(res, result)
+      userlist = JSON.stringify(result)
+      res.send(userlist)
+    }
+  })
+})
+
+// 接口：查询
+router.post('/selectUserList', (req, res) => {
+  var sql = $sql.user.select
+  const params = req.body
+  console.log(params.cno_search)
+  sql += " where cno like " +"'%"+params.cno_search+"%'"
+  console.log(sql)
+  conn.query(sql, function (err, result) {
+    if (err) {
+      res.send(-1)
+      console.log(err)
+    }
+    if (result) {
+      userlist = JSON.stringify(result)
+      res.send(userlist)
+    }
+  })
+})
+
+// 接口：编辑
+router.post('/editUserList', (req, res) => {
+  var sql = $sql.user.select
+  const params = req.body
+  console.log(params)
+  sql += " where cno = " +"'"+params.cno+"'"
+  console.log(sql)
+  conn.query(sql, function (err, result) {
+    if (err) {
+      res.send(-1)
+      console.log(err)
+    }
+    if (result) {
+      userlist = JSON.stringify(result)
+      res.send(userlist)
     }
   })
 })
 
 // 接口：删除信息
-router.post('/delStu', (req, res) => {
-  const sql = $sql.Stu.del
+router.post('/deleteUser', (req, res) => {
+  const sql = $sql.user.delete
   const params = req.body
-  console.log('删除', params)
-  conn.query(sql, [params.username], function (err, result) {
+  console.log('删除', req.body)
+  console.log(sql)
+  conn.query(sql, params.cno, function (err, result) {
     if (err) {
       console.log(err)
+      res.send('-1')
     }
     if (result) {
-      jsonWrite(res, result)
+      res.send('1')
     }
   })
 })
 
 // 接口：修改信息
-router.post('/updateStu', (req, res) => {
-  const sql = $sql.Stu.update
+router.post('/updateDialog', (req, res) => {
+  const sql = $sql.user.updateDialog
   const params = req.body
-  console.log('修改', params)
-  conn.query(sql, [params.username, params.password], function (err, result) {
+  console.log('修改', req.body)
+  console.log(sql)
+  conn.query(sql, [params.cname, params.ctel, params.cno], function (err, result) {
     if (err) {
       console.log(err)
+      res.send('-1')
     }
     if (result) {
-      jsonWrite(res, result)
+      res.send('1')
+    }
+  })
+})
+
+router.post('/updateUser', (req, res) => {
+  const sql = $sql.user.updateAdmin
+  const params = req.body
+  console.log('修改', req.body)
+  console.log(sql)
+  conn.query(sql, [params.cadmin, params.cno], function (err, result) {
+    if (err) {
+      console.log(err)
+      res.send('-1')
+    }
+    if (result) {
+      res.send('1')
     }
   })
 })
