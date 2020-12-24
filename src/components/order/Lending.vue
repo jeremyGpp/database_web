@@ -80,13 +80,13 @@
             <el-input v-model="ruleForm.lamount"></el-input>
           </el-form-item>
           <el-form-item label="Due Date" required>
-            <el-form-item prop="date1" >
-              <el-date-picker type="date" placeholder="Select date" v-model="ruleForm.rtime" style="margin-left: -120px;"></el-date-picker>
-              <el-button type="primary" plain @click="getLendPrice('ruleForm')">Compute Price</el-button>
-            </el-form-item>
+            <el-date-picker type="date" placeholder="Select date" v-model="ruleForm.rtime" style="width: 100%;" ></el-date-picker>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" plain @click="getLendPrice('ruleForm')">Compute Price</el-button>
           </el-form-item>
           <el-form-item label="Price" prop="lprice">
-            <el-input v-model="ruleForm.lprice"></el-input>
+            <el-input v-model="ruleForm.lprice" disabled></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="submitForm('ruleForm')" >Confirm</el-button>
